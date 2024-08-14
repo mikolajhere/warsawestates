@@ -1,0 +1,96 @@
+.bff {
+  -webkit-mask-image: radial-gradient(
+    32rem 32rem at center,
+    white,
+    transparent
+  );
+  mask-image: radial-gradient(32rem 32rem at center, white, transparent);
+}
+
+.apo {
+  stroke: #e5e7eb;
+}
+.tu {
+  width: 100%;
+}
+.pf {
+  height: 64rem;
+}
+.ed {
+  z-index: -10;
+}
+.dn {
+  top: 0px;
+}
+.ao {
+  left: 0px;
+  right: 0px;
+}
+.aa {
+  position: absolute;
+}
+.adn {
+  overflow: hidden;
+}
+.hu {
+  margin-left: -6rem;
+}
+.ed {
+  z-index: -10;
+}
+.dn {
+  top: 0px;
+}
+.de {
+  right: 0px;
+}
+.ci {
+  left: 50%;
+}
+.bec {
+  --tw-blur: blur(64px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast)
+    var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate)
+    var(--tw-sepia) var(--tw-drop-shadow);
+}
+.aa {
+  position: absolute;
+}
+
+.te {
+  width: 50.0625rem;
+}
+.my {
+  aspect-ratio: 801 / 1036;
+}
+.xp {
+  transform: translate3d(var(--tw-translate-x), var(--tw-translate-y), 0)
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.amz {
+  --tw-gradient-from: #ff80b5 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(255 128 181 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.any {
+  --tw-gradient-to: #9089fc var(--tw-gradient-to-position);
+}
+.amu {
+  background-image: linear-gradient(to top right, var(--tw-gradient-stops));
+}
+
+.bbh {
+  opacity: 0.3;
+}
+@media (min-width: 1280px) {
+  .doa {
+    margin-left: 12rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .czn {
+    margin-left: 6rem;
+  }
+}

@@ -1,0 +1,200 @@
+---
+const res = await fetch(
+  "https://warsawestates.com/graphql?query=%7Blistings%7Bnodes%7Btitle,thumbnail,rentPrice,price,rooms,floor,city,address,district,sqft,propertyType,offerType,furniture%7D%7D%7D"
+);
+
+const data = await res?.json();
+const posts = data?.data?.listings?.nodes;
+
+type Post = {
+  thumbnail: string;
+  title: string;
+  rentPrice: number;
+  city: string;
+  district: string;
+  address: string;
+  rooms: number;
+  floor: number;
+  sqft: number;
+  price: number;
+  propertyType: string;
+  offerType: string[];
+  furniture: string;
+};
+
+function ePolish(num: number) {
+  return new Intl.NumberFormat("pl-PL", {
+    style: "currency",
+    currency: "PLN",
+    minimumFractionDigits: 0,
+  }).format(num);
+}
+
+function formatAddress(post: {
+  thumbnail?: string;
+  title?: string;
+  rentPrice?: number;
+  city: any;
+  district: any;
+  address: any;
+  rooms?: number;
+  floor?: number;
+  sqft?: number;
+  price?: number;
+  propertyType?: string;
+  offerType?: string[];
+  furniture?: string;
+}) {
+  let addressParts = [];
+
+  if (post.address) addressParts.push(post.address);
+  if (post.district) addressParts.push(post.district);
+  if (post.city) addressParts.push(post.city);
+
+  return addressParts.join(", ");
+}
+---
+
+<section class="bg-gray-100">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8 py-12 sm:py-32">
+    <h2
+      class="text-4xl font-bold text-center text-gray-900 tracking-tight sm:text-6xl"
+    >
+      Oferty
+    </h2>
+    <div
+      class="mx-auto mt-16 grid max-w-2xl auto-cols-fr grid-cols-1 sm:grid-cols-2 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3"
+    >
+      {
+        posts?.map((post: Post) => (
+          <div class="flex flex-col rounded-lg border border-gray-300 relative hover:shadow-lg">
+            <img
+              src={post.thumbnail}
+              alt={post.title}
+              class="aspect-video lg:aspect-[4/2.75] object-cover rounded-t-lg"
+            />
+            <div class="bg-white p-5 h-full flex-1 rounded-b-lg">
+              <span
+                class={`${post.offerType[0] === "Wynajem" ? "bg-orange-500 border-orange-500" : "bg-green-500 border-green-500"}  inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs text-white font-semibold mb-2`}
+              >
+                {post.offerType[0]}
+              </span>
+              {post.offerType[0] === "Wynajem" ? (
+                <p class="text-xs leading-6 text-gray-700">
+                  <span class="capitalize">{post.propertyType}</span> na wynajem
+                </p>
+              ) : (
+                <p class="text-xs leading-6 text-gray-700">
+                  <span class="capitalize">{post.propertyType}</span> na
+                  sprzedaż
+                </p>
+              )}
+              <h2 class="text-gray-900 font-semibold text-lg leading-7 mb-4 sm:mb-6">
+                {formatAddress(post)}
+              </h2>
+              <div class="grid grid-cols-2 gap-2">
+                {post.offerType[0] === "Sprzedaż" && (
+                  <div class="flex items-center gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="24px"
+                      viewBox="0 -960 960 960"
+                      width="24px"
+                      fill="#9ca3af"
+                      class="w-8 h-8 text-gray-400"
+                    >
+                      <path d="M560-440q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35ZM280-320q-33 0-56.5-23.5T200-400v-320q0-33 23.5-56.5T280-800h560q33 0 56.5 23.5T920-720v320q0 33-23.5 56.5T840-320H280Zm80-80h400q0-33 23.5-56.5T840-480v-160q-33 0-56.5-23.5T760-720H360q0 33-23.5 56.5T280-640v160q33 0 56.5 23.5T360-400Zm440 240H120q-33 0-56.5-23.5T40-240v-440h80v440h680v80ZM280-400v-320 320Z" />
+                    </svg>
+                    {
+                      <p class="text-sm leading-6 text-gray-500">
+                        {(post.price / post.sqft).toFixed(0)} zł/m
+                        <sup class="text-xs -left-1 ">2</sup>
+                      </p>
+                    }
+                  </div>
+                )}
+                <div class="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#9ca3af"
+                    class="w-8 h-8 text-gray-400"
+                  >
+                    <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h240v-560H200v560Zm320 0h240v-280H520v280Zm0-360h240v-200H520v200Z" />
+                  </svg>
+                  <p class="text-sm leading-6 text-gray-500">
+                    {post.sqft} m<sup class="text-xs ">2</sup>
+                  </p>
+                </div>
+                {post.furniture && (
+                  <div class="flex items-center gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="24px"
+                      viewBox="0 -960 960 960"
+                      width="24px"
+                      fill="#9ca3af"
+                      class="w-8 h-8 text-gray-400"
+                    >
+                      <path d="M200-200h-40l-26-80H80v-201q0-33 23.5-56t56.5-23v-120q0-33 23.5-56.5T240-760h480q33 0 56.5 23.5T800-680v120q33 0 56.5 23.5T880-480v200h-54l-26 80h-40l-26-80H226l-26 80Zm320-360h200v-120H520v120Zm-280 0h200v-120H240v120Zm-80 200h640v-120H160v120Zm640 0H160h640Z" />
+                    </svg>
+                    <p class="text-sm leading-6 text-gray-500">Umeblowane</p>
+                  </div>
+                )}
+                {post.rooms > 0 && (
+                  <div class="flex items-center gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="24px"
+                      viewBox="0 -960 960 960"
+                      width="24px"
+                      fill="#9ca3af"
+                      class="w-8 h-8 text-gray-400"
+                    >
+                      <path d="M440-440q17 0 28.5-11.5T480-480q0-17-11.5-28.5T440-520q-17 0-28.5 11.5T400-480q0 17 11.5 28.5T440-440ZM280-120v-80l240-40v-445q0-15-9-27t-23-14l-208-34v-80l220 36q44 8 72 41t28 77v512l-320 54Zm-160 0v-80h80v-560q0-34 23.5-57t56.5-23h400q34 0 57 23t23 57v560h80v80H120Zm160-80h400v-560H280v560Z" />
+                    </svg>
+                    <p class="text-sm leading-6 text-gray-500">
+                      {post.rooms} {post.rooms === 1 ? "pokój" : "pokoje"}
+                    </p>
+                  </div>
+                )}
+                {post.floor > 0 && (
+                  <div class="flex items-center gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="24px"
+                      viewBox="0 -960 960 960"
+                      width="24px"
+                      fill="#9ca3af"
+                      class="w-8 h-8 text-gray-400"
+                    >
+                      <path d="M480-120 300-300l58-58 122 122 122-122 58 58-180 180ZM358-598l-58-58 180-180 180 180-58 58-122-122-122 122Z" />
+                    </svg>
+                    <p class="text-sm leading-6 text-gray-500">
+                      {post.floor} piętro
+                    </p>
+                  </div>
+                )}
+              </div>
+              <hr class="border text-gray-400 my-4" />
+              <div class="flex gap-2 mt-2 flex-wrap items-center justify-between">
+                <p class="text-2xl font-bold leading-6 text-green-600">
+                  {ePolish(post.price)}
+                </p>
+                <a
+                  href=""
+                  class="inline-flex w-full mt-4 sm:w-fit sm:mt-0 items-center justify-center whitespace-nowrap rounded-md text-xs font-medium ring-offset-background transition-colors bg-gray-700   text-white h-10 px-4 py-2"
+                >
+                  <span class="absolute inset-0" />
+                  Szczegóły ogłoszenia
+                </a>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
